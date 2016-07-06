@@ -29,6 +29,7 @@ class ViewController: UIViewController, UITextFieldDelegate, UIImagePickerContro
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
+        
         subscribToKeyboardNotifications()
         
         cameraButton.enabled = UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.Camera)
@@ -36,6 +37,7 @@ class ViewController: UIViewController, UITextFieldDelegate, UIImagePickerContro
     
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
+        
         unsbscribeFromKeyboadNotifications()
     
     }
@@ -76,6 +78,7 @@ class ViewController: UIViewController, UITextFieldDelegate, UIImagePickerContro
             textFieldTop.defaultTextAttributes = memeTextAttributes
             textFieldTop.textAlignment = NSTextAlignment.Center
             textFieldTop.text = "TOP"
+            textFieldTop.delegate = self
             
         } else {
             
@@ -104,35 +107,6 @@ class ViewController: UIViewController, UITextFieldDelegate, UIImagePickerContro
         dismissViewControllerAnimated(true, completion: nil)
         
     }
-
-    func keyboardWillShow(notification: NSNotification) {
-        
-        // Only bottom
-        if textFieldBottom.isFirstResponder() {
-            
-            view.frame.origin.y -= getKeyboardHeight(notification)
-            
-        }
-    }
-    
-    func keyboardWillHide(notification: NSNotification) {
-        
-        // Only bottom
-        if textFieldBottom.isFirstResponder() {
-            
-            view.frame.origin.y = 0
-            
-        }
-        
-    }
-    
-    func getKeyboardHeight(notification: NSNotification) -> CGFloat {
-    
-        let userInfo = notification.userInfo
-        let keyboardSize = userInfo![UIKeyboardFrameEndUserInfoKey] as!NSValue
-        return keyboardSize.CGRectValue().height
-        
-    }
     
     func subscribToKeyboardNotifications() {
     
@@ -147,13 +121,59 @@ class ViewController: UIViewController, UITextFieldDelegate, UIImagePickerContro
     
         NSNotificationCenter.defaultCenter().removeObserver(self, name: UIKeyboardWillShowNotification, object: nil)
         
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: UIKeyboardWillHideNotification, object: nil)
+        
+    }
+    
+    func keyboardWillShow(notification: NSNotification) {
+        
+        // Only bottom
+        if textFieldBottom.isFirstResponder() {
+        
+            view.frame.origin.y -= getKeyboardHeight(notification)
+            
+        }
+    }
+    
+    func getKeyboardHeight(notification: NSNotification) -> CGFloat {
+        
+        let userInfo = notification.userInfo
+        let keyboardSize = userInfo![UIKeyboardFrameEndUserInfoKey] as!NSValue
+        return keyboardSize.CGRectValue().height
+        
+    }
+    
+    func keyboardWillHide(notification: NSNotification) {
+        
+        // Only bottom
+        if textFieldBottom.isFirstResponder() {
+        
+            view.frame.origin.y = 0
+            
+        }
+        
+    }
+    
+    func textFieldDidBeginEditing(textField: UITextField) {
+
+        if textFieldTop.isFirstResponder() {
+            
+            textFieldTop.text = ""
+        
+        }
+        
+        if textFieldBottom.isFirstResponder() {
+        
+            textFieldBottom.text = ""
+        
+        }
+        
     }
 
     // when Retun key is typed
     func textFieldShouldReturn(textField: UITextField) -> Bool {
         
-//        textFieldTop.resignFirstResponder()
-//        textFieldBottom.resignFirstResponder()
+        // TODO: fix this
         textField.resignFirstResponder()
         
         return true
@@ -186,13 +206,5 @@ class ViewController: UIViewController, UITextFieldDelegate, UIImagePickerContro
 //    
 
 }
-
-
-
-
-
-
-
-
 
 
