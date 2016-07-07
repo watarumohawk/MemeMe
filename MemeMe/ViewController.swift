@@ -16,7 +16,7 @@ class ViewController: UIViewController, UITextFieldDelegate, UIImagePickerContro
     @IBOutlet weak var textFieldTop: UITextField!
     @IBOutlet weak var textFieldBottom: UITextField!
    
-    // TOD: share button
+    // TODO: share button
     
     let textField = UITextField()
     
@@ -25,6 +25,7 @@ class ViewController: UIViewController, UITextFieldDelegate, UIImagePickerContro
         
         setUpTextField("TOP")
         setUpTextField("BOTTOM")
+        
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -33,6 +34,7 @@ class ViewController: UIViewController, UITextFieldDelegate, UIImagePickerContro
         subscribToKeyboardNotifications()
         
         cameraButton.enabled = UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.Camera)
+        
     }
     
     override func viewWillDisappear(animated: Bool) {
@@ -62,6 +64,7 @@ class ViewController: UIViewController, UITextFieldDelegate, UIImagePickerContro
         type == "Camera" ? (imagePicker.sourceType = UIImagePickerControllerSourceType.Camera) : (imagePicker.sourceType = UIImagePickerControllerSourceType.PhotoLibrary)
         
         presentViewController(imagePicker, animated: true, completion: nil)
+        
     }
     
     func setUpTextField (place: String) {
@@ -125,6 +128,7 @@ class ViewController: UIViewController, UITextFieldDelegate, UIImagePickerContro
         
     }
     
+    // move the screen up to prvent keyboard overlap
     func keyboardWillShow(notification: NSNotification) {
         
         // Only bottom
@@ -143,6 +147,7 @@ class ViewController: UIViewController, UITextFieldDelegate, UIImagePickerContro
         
     }
     
+    // move back the keyboard after using
     func keyboardWillHide(notification: NSNotification) {
         
         // Only bottom
@@ -172,9 +177,8 @@ class ViewController: UIViewController, UITextFieldDelegate, UIImagePickerContro
 
     // when Retun key is typed
     func textFieldShouldReturn(textField: UITextField) -> Bool {
-        
-        // TODO: fix this
-        textField.resignFirstResponder()
+        // hide keyboard
+        view.endEditing(true)
         
         return true
         
@@ -195,6 +199,7 @@ class ViewController: UIViewController, UITextFieldDelegate, UIImagePickerContro
         // TODO:  Show toolbar and navbar       
         
         return memedImage
+        
     }
     
     //TODO: save Meme object
