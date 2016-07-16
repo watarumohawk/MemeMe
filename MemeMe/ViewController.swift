@@ -7,16 +7,21 @@
 //
 
 import UIKit
+import Accounts
+
 
 class ViewController: UIViewController, UITextFieldDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
 
     @IBOutlet weak var imagePickerView: UIImageView!
+    
     @IBOutlet weak var cameraButton: UIBarButtonItem!
+    @IBOutlet weak var shareButton: UIBarButtonItem!
 
     @IBOutlet weak var textFieldTop: UITextField!
     @IBOutlet weak var textFieldBottom: UITextField!
-   
-    // TODO: share button
+    
+    @IBOutlet weak var toolBarTop: UIToolbar!
+    @IBOutlet weak var toolBarBottom: UIToolbar!
     
     let textField = UITextField()
     
@@ -34,6 +39,8 @@ class ViewController: UIViewController, UITextFieldDelegate, UIImagePickerContro
         subscribToKeyboardNotifications()
         
         cameraButton.enabled = UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.Camera)
+        
+        shareButton.enabled = false
         
     }
     
@@ -55,6 +62,28 @@ class ViewController: UIViewController, UITextFieldDelegate, UIImagePickerContro
         selectPhotoType("Camera")
         
     }
+
+    @IBAction func shareMeme(sender: AnyObject) {
+        
+            let memedImage = generateMemedImage()
+            let activityViewController = UIActivityViewController(activityItems: [memedImage], applicationActivities: nil)
+    
+            activityViewController.completionWithItemsHandler = { activity, success, items, error in
+//
+//                if (success == true) {
+//                    //Generate a memed image
+//                    save(memedImage);
+//
+//                    //Dismiss
+//                    self.dismissViewControllerAnimated(true, completion: nil)
+//                }
+    
+            }
+            
+            presentViewController(activityViewController, animated: true, completion: nil)
+        
+    }
+    
     
     func selectPhotoType(type: String) {
     
@@ -180,13 +209,18 @@ class ViewController: UIViewController, UITextFieldDelegate, UIImagePickerContro
         // hide keyboard
         view.endEditing(true)
         
+        // enable share button
+        shareButton.enabled = true
+        
         return true
         
     }
     
     func generateMemedImage() -> UIImage {
         
-        // TODO: Hide toolbar and navbar
+        // Hide toolbar and navbar
+        toolBarTop.hidden = true
+        toolBarBottom.hidden = true
         
         // Render view to an image
         UIGraphicsBeginImageContext(self.view.frame.size)
@@ -196,7 +230,9 @@ class ViewController: UIViewController, UITextFieldDelegate, UIImagePickerContro
             UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
         
-        // TODO:  Show toolbar and navbar       
+        // Show toolbar and navbar
+        toolBarTop.hidden = false
+        toolBarBottom.hidden = false
         
         return memedImage
         
@@ -205,11 +241,31 @@ class ViewController: UIViewController, UITextFieldDelegate, UIImagePickerContro
     //TODO: save Meme object
 //    func save() {
 //        //Create the meme
-//        let meme = Meme( text: textField.text!, image:
+//        let meme = Meme(toText: textFieldTop.text, bottomText: textFieldBottom.text, image:
 //            imageView.image, memedImage: memedImage)
-//    }
 //    
+//        shareButton.enabled = true
+//    }
+    
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
