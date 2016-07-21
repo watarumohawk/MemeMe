@@ -7,16 +7,21 @@
 //
 
 import UIKit
+import Accounts
+
 
 class ViewController: UIViewController, UITextFieldDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
 
     @IBOutlet weak var imagePickerView: UIImageView!
+    
     @IBOutlet weak var cameraButton: UIBarButtonItem!
+    @IBOutlet weak var shareButton: UIBarButtonItem!
 
     @IBOutlet weak var textFieldTop: UITextField!
     @IBOutlet weak var textFieldBottom: UITextField!
-   
-    // TOD: share button
+    
+    @IBOutlet weak var toolBarTop: UIToolbar!
+    @IBOutlet weak var toolBarBottom: UIToolbar!
     
     let textField = UITextField()
     
@@ -25,17 +30,23 @@ class ViewController: UIViewController, UITextFieldDelegate, UIImagePickerContro
         
         setUpTextField("TOP")
         setUpTextField("BOTTOM")
+        
     }
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
+        
         subscribToKeyboardNotifications()
         
         cameraButton.enabled = UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.Camera)
+        
+        shareButton.enabled = false
+        
     }
     
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
+        
         unsbscribeFromKeyboadNotifications()
     
     }
@@ -51,6 +62,28 @@ class ViewController: UIViewController, UITextFieldDelegate, UIImagePickerContro
         selectPhotoType("Camera")
         
     }
+
+    @IBAction func shareMeme(sender: AnyObject) {
+        
+            let memedImage = generateMemedImage()
+            let activityViewController = UIActivityViewController(activityItems: [memedImage], applicationActivities: nil)
+    
+            activityViewController.completionWithItemsHandler = { activity, success, items, error in
+//
+//                if (success == true) {
+//                    //Generate a memed image
+//                    save(memedImage);
+//
+//                    //Dismiss
+//                    self.dismissViewControllerAnimated(true, completion: nil)
+//                }
+    
+            }
+            
+            presentViewController(activityViewController, animated: true, completion: nil)
+        
+    }
+    
     
     func selectPhotoType(type: String) {
     
@@ -60,6 +93,7 @@ class ViewController: UIViewController, UITextFieldDelegate, UIImagePickerContro
         type == "Camera" ? (imagePicker.sourceType = UIImagePickerControllerSourceType.Camera) : (imagePicker.sourceType = UIImagePickerControllerSourceType.PhotoLibrary)
         
         presentViewController(imagePicker, animated: true, completion: nil)
+        
     }
     
     func setUpTextField (place: String) {
@@ -76,6 +110,7 @@ class ViewController: UIViewController, UITextFieldDelegate, UIImagePickerContro
             textFieldTop.defaultTextAttributes = memeTextAttributes
             textFieldTop.textAlignment = NSTextAlignment.Center
             textFieldTop.text = "TOP"
+            textFieldTop.delegate = self
             
         } else {
             
@@ -104,35 +139,6 @@ class ViewController: UIViewController, UITextFieldDelegate, UIImagePickerContro
         dismissViewControllerAnimated(true, completion: nil)
         
     }
-
-    func keyboardWillShow(notification: NSNotification) {
-        
-        // Only bottom
-        if textFieldBottom.isFirstResponder() {
-            
-            view.frame.origin.y -= getKeyboardHeight(notification)
-            
-        }
-    }
-    
-    func keyboardWillHide(notification: NSNotification) {
-        
-        // Only bottom
-        if textFieldBottom.isFirstResponder() {
-            
-            view.frame.origin.y = 0
-            
-        }
-        
-    }
-    
-    func getKeyboardHeight(notification: NSNotification) -> CGFloat {
-    
-        let userInfo = notification.userInfo
-        let keyboardSize = userInfo![UIKeyboardFrameEndUserInfoKey] as!NSValue
-        return keyboardSize.CGRectValue().height
-        
-    }
     
     func subscribToKeyboardNotifications() {
     
@@ -147,14 +153,64 @@ class ViewController: UIViewController, UITextFieldDelegate, UIImagePickerContro
     
         NSNotificationCenter.defaultCenter().removeObserver(self, name: UIKeyboardWillShowNotification, object: nil)
         
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: UIKeyboardWillHideNotification, object: nil)
+        
+    }
+    
+    // move the screen up to prvent keyboard overlap
+    func keyboardWillShow(notification: NSNotification) {
+        
+        // Only bottom
+        if textFieldBottom.isFirstResponder() {
+        
+            view.frame.origin.y -= getKeyboardHeight(notification)
+            
+        }
+    }
+    
+    func getKeyboardHeight(notification: NSNotification) -> CGFloat {
+        
+        let userInfo = notification.userInfo
+        let keyboardSize = userInfo![UIKeyboardFrameEndUserInfoKey] as!NSValue
+        return keyboardSize.CGRectValue().height
+        
+    }
+    
+    // move back the keyboard after using
+    func keyboardWillHide(notification: NSNotification) {
+        
+        // Only bottom
+        if textFieldBottom.isFirstResponder() {
+        
+            view.frame.origin.y = 0
+            
+        }
+        
+    }
+    
+    func textFieldDidBeginEditing(textField: UITextField) {
+
+        if textFieldTop.isFirstResponder() {
+            
+            textFieldTop.text = ""
+        
+        }
+        
+        if textFieldBottom.isFirstResponder() {
+        
+            textFieldBottom.text = ""
+        
+        }
+        
     }
 
     // when Retun key is typed
     func textFieldShouldReturn(textField: UITextField) -> Bool {
+        // hide keyboard
+        view.endEditing(true)
         
-//        textFieldTop.resignFirstResponder()
-//        textFieldBottom.resignFirstResponder()
-        textField.resignFirstResponder()
+        // enable share button
+        shareButton.enabled = true
         
         return true
         
@@ -162,7 +218,9 @@ class ViewController: UIViewController, UITextFieldDelegate, UIImagePickerContro
     
     func generateMemedImage() -> UIImage {
         
-        // TODO: Hide toolbar and navbar
+        // Hide toolbar and navbar
+        toolBarTop.hidden = true
+        toolBarBottom.hidden = true
         
         // Render view to an image
         UIGraphicsBeginImageContext(self.view.frame.size)
@@ -172,20 +230,35 @@ class ViewController: UIViewController, UITextFieldDelegate, UIImagePickerContro
             UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
         
-        // TODO:  Show toolbar and navbar       
+        // Show toolbar and navbar
+        toolBarTop.hidden = false
+        toolBarBottom.hidden = false
         
         return memedImage
+        
     }
     
     //TODO: save Meme object
 //    func save() {
 //        //Create the meme
-//        let meme = Meme( text: textField.text!, image:
+//        let meme = Meme(toText: textFieldTop.text, bottomText: textFieldBottom.text, image:
 //            imageView.image, memedImage: memedImage)
-//    }
 //    
+//        shareButton.enabled = true
+//    }
+    
 
 }
+
+
+
+
+
+
+
+
+
+
 
 
 
