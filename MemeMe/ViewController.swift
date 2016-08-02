@@ -9,7 +9,6 @@
 import UIKit
 import Accounts
 
-
 class ViewController: UIViewController, UITextFieldDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
 
     @IBOutlet weak var imagePickerView: UIImageView!
@@ -24,6 +23,15 @@ class ViewController: UIViewController, UITextFieldDelegate, UIImagePickerContro
     @IBOutlet weak var toolBarBottom: UIToolbar!
     
     let textField = UITextField()
+    
+    struct Meme {
+        
+        var topText : String!
+        var bottomText : String!
+        var image: UIImage!
+        var memedImage: UIImage!
+        
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -52,46 +60,45 @@ class ViewController: UIViewController, UITextFieldDelegate, UIImagePickerContro
     }
     
     @IBAction func pickAnFromAlbum(sender: AnyObject) {
-        
-        selectPhotoType("PhotoLibrary")
+
+        selectPhotoType(.PhotoLibrary)
         
     }
     
     @IBAction func pickAnImageFromCamera(sender: AnyObject) {
 
-        selectPhotoType("Camera")
+        selectPhotoType(.Camera)
         
     }
 
     @IBAction func shareMeme(sender: AnyObject) {
-        
-            let memedImage = generateMemedImage()
-            let activityViewController = UIActivityViewController(activityItems: [memedImage], applicationActivities: nil)
     
-            activityViewController.completionWithItemsHandler = { activity, success, items, error in
-//
-//                if (success == true) {
-//                    //Generate a memed image
-//                    save(memedImage);
-//
-//                    //Dismiss
-//                    self.dismissViewControllerAnimated(true, completion: nil)
-//                }
-    
+        let memedImage = generateMemedImage()
+        let activityViewController = UIActivityViewController(activityItems: [memedImage], applicationActivities: nil)
+
+        activityViewController.completionWithItemsHandler = { activity, success, items, error in
+
+            if (success == true) {
+                
+                //Generate a memed image
+                self.save(memedImage);
+
+                //Dismiss
+                self.dismissViewControllerAnimated(true, completion: nil)
             }
-            
-            presentViewController(activityViewController, animated: true, completion: nil)
+
+        }
+    
+        presentViewController(activityViewController, animated: true, completion: nil)
         
     }
     
     
-    func selectPhotoType(type: String) {
+    func selectPhotoType(source: UIImagePickerControllerSourceType) {
     
         let imagePicker = UIImagePickerController()
         imagePicker.delegate = self
-        
-        type == "Camera" ? (imagePicker.sourceType = UIImagePickerControllerSourceType.Camera) : (imagePicker.sourceType = UIImagePickerControllerSourceType.PhotoLibrary)
-        
+        imagePicker.sourceType = source
         presentViewController(imagePicker, animated: true, completion: nil)
         
     }
@@ -226,8 +233,7 @@ class ViewController: UIViewController, UITextFieldDelegate, UIImagePickerContro
         UIGraphicsBeginImageContext(self.view.frame.size)
         view.drawViewHierarchyInRect(self.view.frame,
                                      afterScreenUpdates: true)
-        let memedImage : UIImage =
-            UIGraphicsGetImageFromCurrentImageContext()
+        let memedImage : UIImage = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
         
         // Show toolbar and navbar
@@ -239,33 +245,17 @@ class ViewController: UIViewController, UITextFieldDelegate, UIImagePickerContro
     }
     
     //TODO: save Meme object
-//    func save() {
-//        //Create the meme
-//        let meme = Meme(toText: textFieldTop.text, bottomText: textFieldBottom.text, image:
-//            imageView.image, memedImage: memedImage)
-//    
-//        shareButton.enabled = true
-//    }
+    func save(memedImage: UIImage) {
+        //Create the meme
+        let meme = Meme(topText: textFieldTop.text, bottomText: textFieldBottom.text, image:
+            imagePickerView.image, memedImage: memedImage)
+
+        UIImageWriteToSavedPhotosAlbum(memedImage, self, nil, nil)
+        
+        print(meme, " is saved")
+
+        shareButton.enabled = true
+    }
     
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
