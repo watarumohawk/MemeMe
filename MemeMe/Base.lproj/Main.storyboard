@@ -35,7 +35,7 @@
                                     <constraint firstAttribute="height" constant="44" id="r5A-7Z-ca0"/>
                                 </constraints>
                                 <items>
-                                    <barButtonItem title="Share" id="hev-6m-n8g">
+                                    <barButtonItem systemItem="action" id="hev-6m-n8g">
                                         <connections>
                                             <action selector="shareMeme:" destination="BYZ-38-t0r" id="pbI-PI-JTn"/>
                                         </connections>
