@@ -54,7 +54,7 @@
                                         </connections>
                                     </barButtonItem>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="zCg-OB-JxO"/>
-                                    <barButtonItem title="Camera" id="gzN-Zq-a1e">
+                                    <barButtonItem systemItem="camera" id="gzN-Zq-a1e">
                                         <connections>
                                             <action selector="pickAnImageFromCamera:" destination="BYZ-38-t0r" id="FtO-3X-YPw"/>
                                         </connections>
