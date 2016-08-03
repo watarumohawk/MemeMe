@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import Accounts
 
 class ViewController: UIViewController, UITextFieldDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
 
@@ -21,8 +20,6 @@ class ViewController: UIViewController, UITextFieldDelegate, UIImagePickerContro
     
     @IBOutlet weak var toolBarTop: UIToolbar!
     @IBOutlet weak var toolBarBottom: UIToolbar!
-    
-    let textField = UITextField()
     
     struct Meme {
         
@@ -48,7 +45,7 @@ class ViewController: UIViewController, UITextFieldDelegate, UIImagePickerContro
         
         cameraButton.enabled = UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.Camera)
         
-        shareButton.enabled = false
+        shareButton.enabled = (imagePickerView.image == nil) ? false : true
         
     }
     
@@ -81,7 +78,7 @@ class ViewController: UIViewController, UITextFieldDelegate, UIImagePickerContro
             if (success == true) {
                 
                 //Generate a memed image
-                self.save(memedImage);
+                self.save(memedImage)
 
                 //Dismiss
                 self.dismissViewControllerAnimated(true, completion: nil)
@@ -161,7 +158,8 @@ class ViewController: UIViewController, UITextFieldDelegate, UIImagePickerContro
         // Only bottom
         if textFieldBottom.isFirstResponder() {
         
-            view.frame.origin.y -= getKeyboardHeight(notification)
+//            view.frame.origin.y -= getKeyboardHeight(notification)
+            view.frame.origin.y = getKeyboardHeight(notification) * (-1)
             
         }
     }
@@ -188,27 +186,26 @@ class ViewController: UIViewController, UITextFieldDelegate, UIImagePickerContro
     
     func textFieldDidBeginEditing(textField: UITextField) {
 
-        if textFieldTop.isFirstResponder() {
-            
-            textFieldTop.text = ""
-        
+//        if textFieldTop.isFirstResponder() {
+//            
+//            textFieldTop.text = ""
+//        
+//        }
+//        
+//        if textFieldBottom.isFirstResponder() {
+//        
+//            textFieldBottom.text = ""
+//        
+//        }
+        if textField.text == "TOP" || textField.text == "BOTTOM" {
+            textField.text = ""
         }
-        
-        if textFieldBottom.isFirstResponder() {
-        
-            textFieldBottom.text = ""
-        
-        }
-        
     }
 
     // when Retun key is typed
     func textFieldShouldReturn(textField: UITextField) -> Bool {
         // hide keyboard
         view.endEditing(true)
-        
-        // enable share button
-        shareButton.enabled = true
         
         return true
         
@@ -245,8 +242,5 @@ class ViewController: UIViewController, UITextFieldDelegate, UIImagePickerContro
         
         print(meme, " is saved")
 
-        shareButton.enabled = true
     }
-    
-
 }
