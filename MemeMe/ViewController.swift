@@ -36,8 +36,8 @@ class ViewController: UIViewController, UITextFieldDelegate, UIImagePickerContro
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        setUpTextField("TOP")
-        setUpTextField("BOTTOM")
+        setUpTextField(textFieldTop)
+        setUpTextField(textFieldBottom)
         
     }
     
@@ -103,7 +103,7 @@ class ViewController: UIViewController, UITextFieldDelegate, UIImagePickerContro
         
     }
     
-    func setUpTextField (place: String) {
+    func setUpTextField (textField: UITextField) {
         
         let memeTextAttributes = [
             NSStrokeColorAttributeName : UIColor.blackColor(),
@@ -112,21 +112,12 @@ class ViewController: UIViewController, UITextFieldDelegate, UIImagePickerContro
             NSStrokeWidthAttributeName : -3.0
         ]
         
-        if (place == "TOP") {
-            
-            textFieldTop.defaultTextAttributes = memeTextAttributes
-            textFieldTop.textAlignment = NSTextAlignment.Center
-            textFieldTop.text = "TOP"
-            textFieldTop.delegate = self
-            
-        } else {
-            
-            textFieldBottom.defaultTextAttributes = memeTextAttributes
-            textFieldBottom.textAlignment = NSTextAlignment.Center
-            textFieldBottom.text = "BOTTOM"
-            textFieldBottom.delegate = self
-            
-        }
+        textField.defaultTextAttributes = memeTextAttributes
+        textField.textAlignment = NSTextAlignment.Center
+        textFieldTop.text = "TOP"
+        textFieldBottom.text = "BOTTOM"
+        textField.delegate = self
+        
     }
     
     func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : AnyObject]) {
