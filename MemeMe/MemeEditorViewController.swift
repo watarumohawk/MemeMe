@@ -1,5 +1,5 @@
 //
-//  ViewController.swift
+//  MemeEditorViewController
 //  MemeMe
 //
 //  Created by Wataru on 2016/06/15.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ViewController: UIViewController, UITextFieldDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+class MemeEditorViewController: UIViewController, UITextFieldDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
 
     @IBOutlet weak var imagePickerView: UIImageView!
     
@@ -21,14 +21,7 @@ class ViewController: UIViewController, UITextFieldDelegate, UIImagePickerContro
     @IBOutlet weak var toolBarTop: UIToolbar!
     @IBOutlet weak var toolBarBottom: UIToolbar!
     
-    struct Meme {
-        
-        var topText : String!
-        var bottomText : String!
-        var image: UIImage!
-        var memedImage: UIImage!
-        
-    }
+    @IBOutlet weak var cancelButton: UIBarButtonItem!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -90,6 +83,15 @@ class ViewController: UIViewController, UITextFieldDelegate, UIImagePickerContro
         
     }
     
+    @IBAction func cancelButton(sender: AnyObject) {
+        
+        navigationController?.dismissViewControllerAnimated(true, completion: nil)
+        let tableViewController = self.storyboard!.instantiateViewControllerWithIdentifier("TableViewController")
+        
+        navigationController?.presentViewController(tableViewController, animated: true,completion:nil)
+        dismissViewControllerAnimated(true, completion: nil)
+        
+    }
     
     func selectPhotoType(source: UIImagePickerControllerSourceType) {
     
@@ -138,10 +140,10 @@ class ViewController: UIViewController, UITextFieldDelegate, UIImagePickerContro
     func subscribToKeyboardNotifications() {
     
         //  Keyboard show
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ViewController.keyboardWillShow(_:)), name: UIKeyboardWillShowNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(MemeEditorViewController.keyboardWillShow(_:)), name: UIKeyboardWillShowNotification, object: nil)
         
         // Keyboad hide
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ViewController.keyboardWillHide(_:)), name: UIKeyboardWillHideNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(MemeEditorViewController.keyboardWillHide(_:)), name: UIKeyboardWillHideNotification, object: nil)
     }
     
     func unsbscribeFromKeyboadNotifications() {
@@ -157,8 +159,7 @@ class ViewController: UIViewController, UITextFieldDelegate, UIImagePickerContro
         
         // Only bottom
         if textFieldBottom.isFirstResponder() {
-        
-//            view.frame.origin.y -= getKeyboardHeight(notification)
+            
             view.frame.origin.y = getKeyboardHeight(notification) * (-1)
             
         }
@@ -186,17 +187,6 @@ class ViewController: UIViewController, UITextFieldDelegate, UIImagePickerContro
     
     func textFieldDidBeginEditing(textField: UITextField) {
 
-//        if textFieldTop.isFirstResponder() {
-//            
-//            textFieldTop.text = ""
-//        
-//        }
-//        
-//        if textFieldBottom.isFirstResponder() {
-//        
-//            textFieldBottom.text = ""
-//        
-//        }
         if textField.text == "TOP" || textField.text == "BOTTOM" {
             textField.text = ""
         }
@@ -232,15 +222,20 @@ class ViewController: UIViewController, UITextFieldDelegate, UIImagePickerContro
         
     }
     
-    //TODO: save Meme object
     func save(memedImage: UIImage) {
         //Create the meme
         let meme = Meme(topText: textFieldTop.text, bottomText: textFieldBottom.text, image:
             imagePickerView.image, memedImage: memedImage)
 
-        UIImageWriteToSavedPhotosAlbum(memedImage, self, nil, nil)
+        let object = UIApplication.sharedApplication().delegate
+        let appDelegate = object as! AppDelegate
+        appDelegate.memes.append(meme)
         
-        print(meme, " is saved")
-
     }
 }
+
+
+
+
+
+
