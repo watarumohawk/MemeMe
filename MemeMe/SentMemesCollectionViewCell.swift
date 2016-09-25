@@ -11,6 +11,11 @@ import UIKit
 class SentMemesCollectionViewCell: UICollectionViewCell {
     
     @IBOutlet weak var memeImageView: UIImageView!
+    
+    var memes: [Meme] {
+        return (UIApplication.sharedApplication().delegate as! AppDelegate).memes
+        
+    }
 
 }
 

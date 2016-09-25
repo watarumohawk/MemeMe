@@ -6,10 +6,10 @@
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
-        <!--Sent Memes-->
+        <!--Sent Meme-->
         <scene sceneID="yGM-6F-HbK">
             <objects>
-                <collectionViewController storyboardIdentifier="CollectionViewController" id="lPJ-90-EcZ" customClass="SentMemesCollectionViewController" sceneMemberID="viewController">
+                <collectionViewController storyboardIdentifier="CollectionViewController" id="lPJ-90-EcZ" userLabel="Sent Meme" customClass="SentMemesCollectionViewController" customModule="MemeMe" sceneMemberID="viewController">
                     <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" id="dkf-9U-DKF">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -60,6 +60,9 @@
                         </barButtonItem>
                     </navigationItem>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
+                    <connections>
+                        <outlet property="flowLayout" destination="8tD-qN-slb" id="U1f-6A-gVG"/>
+                    </connections>
                 </collectionViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ddC-SP-vS9" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -85,13 +88,13 @@
         <!--Table View Controller-->
         <scene sceneID="OZ0-nm-BXW">
             <objects>
-                <tableViewController storyboardIdentifier="TableViewController" title="Table View Controller" id="rMB-X3-Ara" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="TableViewController" title="Table View Controller" id="rMB-X3-Ara" customClass="SentMemesTableViewController" customModule="MemeMe" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="NXV-dF-bFH">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="cLq-yo-Yln">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="cLq-yo-Yln" customClass="SentMemesTableViewCell" customModule="MemeMe">
                                 <rect key="frame" x="0.0" y="92" width="375" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="cLq-yo-Yln" id="6dH-pB-5gt">
@@ -147,8 +150,8 @@
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     </tabBar>
                     <connections>
-                        <segue destination="KqM-9r-CIe" kind="relationship" relationship="viewControllers" id="HMq-4N-jQZ"/>
                         <segue destination="qqI-9a-fmK" kind="relationship" relationship="viewControllers" id="NL6-zg-Q4q"/>
+                        <segue destination="KqM-9r-CIe" kind="relationship" relationship="viewControllers" id="HMq-4N-jQZ"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="T4J-EE-zcp" userLabel="First Responder" sceneMemberID="firstResponder"/>

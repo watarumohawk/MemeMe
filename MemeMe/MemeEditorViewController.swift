@@ -233,9 +233,3 @@ class MemeEditorViewController: UIViewController, UITextFieldDelegate, UIImagePi
         
     }
 }
-
-
-
-
-
-
