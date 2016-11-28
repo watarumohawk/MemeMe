@@ -1,5 +1,5 @@
 //
-//  SentMemesTableViewCellController.swift
+//  SentMemesTableViewController.swift
 //  MemeMe
 //
 //  Created by 関口渉 on 9/25/16.
@@ -9,20 +9,19 @@
 import UIKit
 import Foundation
 
-class SentMemesTableViewCellController: UITableViewController {
+class SentMemesTableViewController: UITableViewController {
     
     var memes: [Meme]!
     
-    
-    override func viewWillAppear(animated: Bool) {
-        super.viewWillAppear(animated)
-     
-        let object = UIApplication.sharedApplication().delegate
-        let appDelegate = object as! AppDelegate
-        memes = appDelegate.memes
-        
-        tableView!.reloadData()
-    }
+//    override func viewWillAppear(animated: Bool) {
+//        super.viewWillAppear(animated)
+//     
+//        let object = UIApplication.sharedApplication().delegate
+//        let appDelegate = object as! AppDelegate
+//        memes = appDelegate.memes
+//        
+//        tableView!.reloadData()
+//    }
     
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return memes.count
@@ -31,12 +30,14 @@ class SentMemesTableViewCellController: UITableViewController {
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
         let cell = tableView.dequeueReusableCellWithIdentifier("SentMemesTableViewCell")!
-        let meme = memes[indexPath.row]
+        let meme = self.memes[indexPath.row]
         
-        print("~~~~~~~~~~~", meme)
         
 //        cell.textLabel?.text = meme.topText + " " + meme.bottomText
-//        cell.imageView?.image = UIImage(image: meme.memedImage)
+        
+        cell.imageView?.image = UIImage(image: memes.memedImage)
+        
+//        contentImage = UIImageView(image: meme.memedImage)
         
         return cell
     }

@@ -100,17 +100,6 @@
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="cLq-yo-Yln" id="6dH-pB-5gt">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
-                                    <subviews>
-                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="contentImage" translatesAutoresizingMaskIntoConstraints="NO" id="Mm1-4J-Wtn">
-                                            <rect key="frame" x="0.0" y="3" width="171" height="35.5"/>
-                                        </imageView>
-                                    </subviews>
-                                    <constraints>
-                                        <constraint firstAttribute="bottomMargin" secondItem="Mm1-4J-Wtn" secondAttribute="bottom" constant="-3" id="2Iw-3V-uNk"/>
-                                        <constraint firstItem="Mm1-4J-Wtn" firstAttribute="leading" secondItem="6dH-pB-5gt" secondAttribute="leadingMargin" constant="-8" id="GEm-SD-8x5"/>
-                                        <constraint firstAttribute="trailingMargin" secondItem="Mm1-4J-Wtn" secondAttribute="trailing" constant="196" id="aCc-TC-SOL"/>
-                                        <constraint firstItem="Mm1-4J-Wtn" firstAttribute="top" secondItem="6dH-pB-5gt" secondAttribute="topMargin" constant="-5" id="sT7-HE-OQd"/>
-                                    </constraints>
                                 </tableViewCellContentView>
                             </tableViewCell>
                         </prototypes>
@@ -278,9 +267,6 @@
             <point key="canvasLocation" x="1132.5" y="-363.5"/>
         </scene>
     </scenes>
-    <resources>
-        <image name="contentImage" width="16" height="16"/>
-    </resources>
     <inferredMetricsTieBreakers>
         <segue reference="VeZ-Rk-hdF"/>
     </inferredMetricsTieBreakers>
