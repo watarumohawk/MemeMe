@@ -50,23 +50,10 @@ class SentMemesCollectionViewController: UICollectionViewController {
     
 //        cell.setText(meme.top, bottomString: meme.bottom)
         
-        let imageView = UIImageView(image: meme.image)
+        let imageView = UIImageView(image: meme.memedImage)
         cell.backgroundView = imageView
         return cell
     }
     
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
 
